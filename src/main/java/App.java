@@ -11,5 +11,7 @@ public class App {
         System.out.println(systemVersion);
         System.out.print("Wersja developerska: ");
         System.out.println(isDeveloperVersion);
+
+        Person person = new Person();
     }
 }

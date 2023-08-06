@@ -1,26 +1,31 @@
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        WelcomeInformation welcomeInformation = new WelcomeInformation();
         String hotelName = "Overlook";
         int systemVersion = 1;
-        boolean isDeveloperVersion = true;
-
-        System.out.print("Witaj w systemie rezerwacji dla hotelu ");
-        System.out.println(hotelName);
-        System.out.print("Aktualna wersja systemu: ");
-        System.out.println(systemVersion);
-        System.out.print("Wersja developerska: ");
-        System.out.println(isDeveloperVersion);
-        System.out.println("\n====================\n");
+        boolean isDeveloperVersion = false;
+        welcomeInformation.printInfo(hotelName, systemVersion, isDeveloperVersion);
 
         Scanner sc = new Scanner(System.in);
 
         System.out.println("1. Dodaj nowego gościa");
         System.out.println("2. Dodaj nowy pokój");
+        System.out.println("3. Wyszukaj gościa");
         System.out.println("Wybierz opcję: ");
 
+        int option = sc.nextInt();
 
+        if (option == 1) {
+            System.out.println("Wybrano opcję 1.");
+        } else if (option == 2) {
+            System.out.println("Wybrano opcję 2.");
+        } else if (option == 3) {
+            System.out.println("Wybrano opcję 3.");
+        } else {
+            System.out.println("Błąd. Niepoprawny wybór.");
+        }
     }
 }

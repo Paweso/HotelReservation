@@ -1,9 +1,15 @@
 public class App {
     public static void main(String[] args) {
-        System.out.println("Witaj w systemie rezerwacji dla hotelu Overlook");
+
+        String hotelName = "Overlook";
+        int systemVersion = 1;
+        boolean isDeveloperVersion = true;
+
+        System.out.print("Witaj w systemie rezerwacji dla hotelu ");
+        System.out.println(hotelName);
         System.out.print("Aktualna wersja systemu: ");
-        System.out.println(1);
+        System.out.println(systemVersion);
         System.out.print("Wersja developerska: ");
-        System.out.println(true);
+        System.out.println(isDeveloperVersion);
     }
 }

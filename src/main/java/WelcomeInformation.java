@@ -55,7 +55,6 @@ public class WelcomeInformation {
         for (int i = 0; i < result; i++) {
             System.out.print(" ");
         }
-
     }
 
     private void printWelcomeText(

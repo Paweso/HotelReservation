@@ -58,7 +58,14 @@ public class App {
             String lastName = sc.next();
             System.out.print("Podaj wiek: ");
             int age = sc.nextInt();
-            return new Guest(firstName, lastName, age);
+            System.out.print("""
+                    Podaj płeć:
+                        1. Mężczyzna.
+                        2. Kobieta
+                        """);
+            int genderOption = sc.nextInt();
+            Gender gender = genderOption == 2 ? Gender.FEMALE : Gender.MALE;
+            return new Guest(firstName, lastName, age, gender);
         } catch (Exception e) {
             System.out.println("Niewłaściwa forma wieku!");
             return null;

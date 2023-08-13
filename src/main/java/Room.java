@@ -1,30 +1,14 @@
 public class Room {
-    private int number;
-    private int beds;
+    private final int number;
+    private final BedType bedType;
 
-    public Room(int number, int beds) {
+    public Room(int number, BedType bedType) {
         this.number = number;
-        this.beds = beds;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getBeds() {
-        return beds;
-    }
-
-    public void setBeds(int beds) {
-        this.beds = beds;
+        this.bedType = bedType;
     }
 
     @Override
     public String toString() {
-        return String.format("Pokój o numerze - %d, w którym znajduje się %d łóżek/łóżka.", number, beds);
+        return String.format("Pokój o numerze - %d (%s).", number, bedType);
     }
 }

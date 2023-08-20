@@ -1,14 +1,16 @@
+import java.util.Arrays;
+
 public class Room {
     private final int number;
-    private final BedType bedType;
+    private final BedType[] bedTypes;
 
-    public Room(int number, BedType bedType) {
+    public Room(int number, BedType[] bedTypes) {
         this.number = number;
-        this.bedType = bedType;
+        this.bedTypes = bedTypes;
     }
 
     @Override
     public String toString() {
-        return String.format("Pokój o numerze - %d (%s).", number, bedType);
+        return String.format("Pokój o numerze - %d (%s).", number, Arrays.toString(bedTypes));
     }
 }

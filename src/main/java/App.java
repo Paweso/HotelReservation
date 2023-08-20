@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
@@ -10,9 +11,23 @@ public class App {
         boolean isDeveloperVersion = false;
 
         showWelcomeInformationSystem(hotelName, systemVersion, isDeveloperVersion);
-        int option = getActionFromUser(sc);
 
-        showActionResultFromUser(option, sc);
+        try {
+            int option = getActionFromUser(sc);
+            showActionResultFromUser(option, sc);
+        } catch (WrongOptionException e) {
+            System.out.println("Wystąpił niespodziewany błąd!");
+            System.out.println("Kod błędu: " + e.getCode());
+            System.out.println("Komunikat błędu: " + e.getMessage());
+        } catch (OnlyNumberException e) {
+            System.out.println("Wystąpił niespodziewany błąd!");
+            System.out.println("Kod błędu: " + e.getCode());
+            System.out.println("Komunikat błędu: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Wystąpił niespodziewany błąd!");
+            System.out.println("Nieznany kod błędu!");
+            System.out.println("Komunikat błędu: " + e.getMessage());
+        }
     }
 
     private static void showWelcomeInformationSystem(String hotelName, int systemVersion, boolean isDeveloperVersion) {
@@ -25,11 +40,11 @@ public class App {
         System.out.println("3. Wyszukaj gościa");
         System.out.println("Wybierz opcję: ");
 
-        int option = 0;
+        int option;
         try {
             option = sc.nextInt();
-        } catch (Exception e) {
-            System.out.println("Niepoprawne dane wejściowe");
+        } catch (InputMismatchException e) {
+            throw new OnlyNumberException("Use only numbers in main menu! ");
         }
         return option;
     }
@@ -45,31 +60,41 @@ public class App {
                 System.out.println(newRoom);
             }
             case 3 -> System.out.println("Wybrano opcję 3.");
-            default -> System.out.println("Błąd. Niepoprawny wybór.");
+            default -> throw new WrongOptionException("Wrong option in main menu");
         }
     }
 
     private static Guest createNewGuest(Scanner sc) {
+
+        System.out.println("Tworzymy nowego gościa: ");
+        System.out.print("Podaj imię: ");
+        String firstName = sc.next();
+        System.out.print("Podaj nazwisko: ");
+        String lastName = sc.next();
+        int age;
         try {
-            System.out.println("Tworzymy nowego gościa: ");
-            System.out.print("Podaj imię: ");
-            String firstName = sc.next();
-            System.out.print("Podaj nazwisko: ");
-            String lastName = sc.next();
             System.out.print("Podaj wiek: ");
-            int age = sc.nextInt();
-            System.out.print("""
-                    Podaj płeć:
-                        1. Mężczyzna.
-                        2. Kobieta
-                        """);
-            int genderOption = sc.nextInt();
-            Gender gender = genderOption == 2 ? Gender.FEMALE : Gender.MALE;
-            return new Guest(firstName, lastName, age, gender);
-        } catch (Exception e) {
-            System.out.println("Niewłaściwa forma wieku!");
-            return null;
+            age = sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new OnlyNumberException("Wrong form of age!");
         }
+        System.out.print("""
+                Podaj płeć:
+                    1. Mężczyzna.
+                    2. Kobieta
+                    """);
+        Gender gender;
+        try {
+            int genderOption = sc.nextInt();
+            gender = switch (genderOption) {
+                case 1 -> Gender.MALE;
+                case 2 -> Gender.FEMALE;
+                default -> throw new WrongOptionException("Wrong option in gender menu.");
+            };
+        } catch (InputMismatchException e) {
+            throw new OnlyNumberException("Wrong form of number!");
+        }
+        return new Guest(firstName, lastName, age, gender);
     }
 
     private static Room createNewRoom(Scanner sc) {
@@ -77,22 +102,34 @@ public class App {
             System.out.println("Tworzymy nowy pokój: ");
             System.out.print("Podaj numer pokoju: ");
             int number = sc.nextInt();
+            BedType[] bedTypes = chooseBedType(sc);
+            return new Room(number, bedTypes);
+        } catch (InputMismatchException e) {
+            throw new OnlyNumberException("Use numbers when creating new room!");
+        }
+    }
+
+    private static BedType[] chooseBedType(Scanner sc) {
+        System.out.println("Podaj ilość łóżek: ");
+        int bedNumber = sc.nextInt();
+        BedType[] bedTypes = new BedType[bedNumber];
+
+        for (int i = 0; i < bedTypes.length; i++) {
             System.out.print("""
-                    Podaj typ łóżek:
-                        1. Pojedyńcze
-                        2. Podwójne
-                        3. Królewskie
+                    Podaj typ łóżka:
+                        1. Pojedyńcze.
+                        2. Podwójne.
+                        3. Królewskie.
                         """);
             int bedTypeOption = sc.nextInt();
             BedType bedType = switch (bedTypeOption) {
+                case 1 -> BedType.SINGLE;
                 case 2 -> BedType.DOUBLE;
                 case 3 -> BedType.KING_SIZE;
-                default -> BedType.SINGLE;
+                default -> throw new WrongOptionException("Wrong option when selecting bed type!");
             };
-            return new Room(number, bedType);
-        } catch (Exception e) {
-            System.out.println("Niewłaściwa forma liczb!");
-            return null;
+            bedTypes[i] = bedType;
         }
+        return bedTypes;
     }
 }

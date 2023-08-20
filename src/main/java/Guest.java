@@ -2,9 +2,7 @@ public class Guest {
     private final String firstname;
     private final String lastname;
     private final int age;
-
     private final Gender gender;
-
 
     public Guest(String firstname, String lastname, int age, Gender gender) {
         this.firstname = firstname;

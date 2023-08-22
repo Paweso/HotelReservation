@@ -1,8 +1,4 @@
-public class WrongOptionException extends RuntimeException {
-
-    public WrongOptionException() {
-        super();
-    }
+public class WrongOptionException extends ReservationCustomException {
 
     public int getCode() {
         return 101;

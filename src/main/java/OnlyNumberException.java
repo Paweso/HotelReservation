@@ -1,10 +1,6 @@
-public class OnlyNumberException extends RuntimeException {
+public class OnlyNumberException extends ReservationCustomException {
     public int getCode() {
         return 102;
-    }
-
-    public OnlyNumberException(){
-        super();
     }
 
     public OnlyNumberException(String message) {

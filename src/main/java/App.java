@@ -2,6 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
+    private static TextUI textUI = new TextUI();
 
     public static void main(String[] args) {
 
@@ -15,11 +16,7 @@ public class App {
         try {
             int option = getActionFromUser(sc);
             showActionResultFromUser(option, sc);
-        } catch (WrongOptionException e) {
-            System.out.println("Wystąpił niespodziewany błąd!");
-            System.out.println("Kod błędu: " + e.getCode());
-            System.out.println("Komunikat błędu: " + e.getMessage());
-        } catch (OnlyNumberException e) {
+        } catch (WrongOptionException | OnlyNumberException e) {
             System.out.println("Wystąpił niespodziewany błąd!");
             System.out.println("Kod błędu: " + e.getCode());
             System.out.println("Komunikat błędu: " + e.getMessage());
@@ -27,6 +24,8 @@ public class App {
             System.out.println("Wystąpił niespodziewany błąd!");
             System.out.println("Nieznany kod błędu!");
             System.out.println("Komunikat błędu: " + e.getMessage());
+        } finally {
+            System.out.println("Wychodzę z aplikacji!");
         }
     }
 
@@ -50,11 +49,9 @@ public class App {
     }
 
     private static void showActionResultFromUser(int option, Scanner sc) {
+
         switch (option) {
-            case 1 -> {
-                Guest newGuest = createNewGuest(sc);
-                System.out.println(newGuest);
-            }
+            case 1 -> textUI.readNewGuestData(sc);
             case 2 -> {
                 Room newRoom = createNewRoom(sc);
                 System.out.println(newRoom);
@@ -64,38 +61,6 @@ public class App {
         }
     }
 
-    private static Guest createNewGuest(Scanner sc) {
-
-        System.out.println("Tworzymy nowego gościa: ");
-        System.out.print("Podaj imię: ");
-        String firstName = sc.next();
-        System.out.print("Podaj nazwisko: ");
-        String lastName = sc.next();
-        int age;
-        try {
-            System.out.print("Podaj wiek: ");
-            age = sc.nextInt();
-        } catch (InputMismatchException e) {
-            throw new OnlyNumberException("Wrong form of age!");
-        }
-        System.out.print("""
-                Podaj płeć:
-                    1. Mężczyzna.
-                    2. Kobieta
-                    """);
-        Gender gender;
-        try {
-            int genderOption = sc.nextInt();
-            gender = switch (genderOption) {
-                case 1 -> Gender.MALE;
-                case 2 -> Gender.FEMALE;
-                default -> throw new WrongOptionException("Wrong option in gender menu.");
-            };
-        } catch (InputMismatchException e) {
-            throw new OnlyNumberException("Wrong form of number!");
-        }
-        return new Guest(firstName, lastName, age, gender);
-    }
 
     private static Room createNewRoom(Scanner sc) {
         try {
